@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEAL THE HEALTH, HEAL OURSELVES</title>
+    <style>
+        /* 1. 기본 스타일 및 화면 꽉 채우기 */
+        :root {
+            --main-blue: #2c3e50; /* 진한 푸른색 */
+            --light-blue: #3498db; /* 밝은 푸른색 */
+            --white: #ecf0f1;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            color: var(--white);
+            background-color: var(--main-blue);
+            min-height: 100vh; /* 화면 꽉 채우기 */
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* 2. 배경 애니메이션 (단순한 움직임) */
+        @keyframes subtle-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header-bg {
+            background: linear-gradient(-45deg, var(--main-blue), var(--light-blue), #2980b9);
+            background-size: 400% 400%;
+            animation: subtle-move 15s ease infinite;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* 3. 섹션 스타일 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1; /* 콘텐츠가 남은 공간 채우도록 */
+        }
+
+        .section {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .section:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        h2 {
+            color: var(--light-blue);
+            border-bottom: 2px solid var(--light-blue);
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+
+        /* 4. 대시보드 및 간단한 시각화 */
+        .dashboard {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .dashboard-item h3 {
+            margin: 5px 0 0;
+            color: var(--white);
+            font-size: 1.5em;
+        }
+
+        .data-visualization {
+            margin-top: 20px;
+        }
+        
+        /* 단순 막대 그래프 스타일 (CSS만 사용) */
+        .bar-chart {
+            display: flex;
+            height: 100px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            align-items: flex-end;
+            padding: 5px;
+        }
+        .bar {
+            flex-grow: 1;
+            margin: 0 5px;
+            background-color: var(--light-blue);
+            border-radius: 3px 3px 0 0;
+            transition: height 0.5s ease-out;
+            text-align: center;
+            color: var(--main-blue);
+            font-size: 0.8em;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* 5. 버튼 및 입력 요소 */
+        .button, button {
+            background-color: var(--light-blue);
+            color: var(--main-blue);
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .button:hover, button:hover {
+            background-color: #5dade2;
+        }
+
+        input[type="text"], input[type="number"], textarea, select {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid var(--light-blue);
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: var(--main-blue);
+        }
+        
+        /* 6. 퀴즈 스타일 */
+        .quiz-option {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        .quiz-option:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 7. Footer */
+        .footer {
+            padding: 10px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <h1>HEAL THE HEALTH, HEAL OURSELVES</h1>
+    </header>
+
+    <div class="dashboard" id="environment-dashboard">
+        <div class="dashboard-item">
+            <h2>오늘의 대기질 지수</h2>
+            <h3 id="air-quality">좋음 (35)</h3>
+        </div>
+        <div class="dashboard-item">
+            <h2>수질 오염 지수</h2>
+            <h3 id="water-quality">보통 (5.2)</h3>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="section" id="problem">
+            <h2>문제 인식 섹션 🧐</h2>
+            <p>우리가 직면한 환경 및 보건 문제에 대해 알아봅니다. (예: 미세먼지 증가, 생물 다양성 감소)</p>
+        </div>
+
+        <div class="section" id="solution">
+            <h2>해결 아이디어 섹션 ✨</h2>
+            <p>일상에서 실천할 수 있는 작고 효과적인 해결책들을 제시합니다. (예: 대중교통 이용, 쓰레기 줄이기)</p>
+        </div>
+
+        <div class="section" id="approach">
+            <h2>보건학적 접근 섹션 🩺</h2>
+            <p>환경 문제가 개인과 공중 보건에 미치는 영향을 분석하고, 예방적 접근법을 소개합니다. (예: 환경성 질환 예방 가이드)</p>
+        </div>
+
+        <div class="section" id="action">
+            <h2>참여 및 행동 섹션 🤝</h2>
+            <p>지역사회 활동 참여, 환경 캠페인 등 행동을 위한 기회를 안내합니다.</p>
+        </div>
+
+        <div class="section" id="data-vis">
+            <h2>데이터 시각화 (간단 버전) 📊</h2>
+            <p>월별 실천율 변화를 보여주는 간단한 막대 그래프입니다.</p>
+            <div class="bar-chart" id="chart-area">
+                </div>
+        </div>
+
+        <div class="section" id="news">
+            <h2>뉴스 요약 섹션 📰</h2>
+            <p>최근 환경 및 보건 관련 뉴스를 요약하여 보여줍니다.</p>
+            <ul>
+                <li>[뉴스 1] **기후 변화**가 농업 생산성에 미치는 영향 요약.</li>
+                <li>[뉴스 2] **친환경 정책** 도입에 대한 시민들의 반응 요약.</li>
+            </ul>
+        </div>
+
+        <div class="section" id="health-record">
+            <h2>건강 기록 및 피드백 📝</h2>
+            <p>오늘의 활동량과 스트레스 수준을 기록하고 간단한 피드백을 받아보세요.</p>
+            <div>
+                <label for="steps">오늘 걸음 수 (만보 기준):</label>
+                <input type="number" id="steps" placeholder="예: 7000">
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="stress">스트레스 수준 (1-10):</label>
+                <input type="number" id="stress" min="1" max="10" placeholder="예: 5">
+            </div>
+            <button onclick="submitHealthRecord()">기록하고 피드백 받기</button>
+            <p id="feedback-result" style="margin-top: 15px; font-weight: bold;"></p>
+        </div>
+
+        <div class="section" id="quiz">
+            <h2>환경 퀴즈 및 지수 측정 ❓</h2>
+            <p id="quiz-question">퀴즈를 풀고 나의 환경 지수를 확인해 보세요! (총 3문제)</p>
+            <div id="quiz-area">
+                </div>
+            <button onclick="checkQuizResult()" style="display: none;" id="submit-quiz-btn">결과 확인</button>
+            <p id="quiz-result" style="margin-top: 15px; font-weight: bold;"></p>
+        </div>
+
+        <div class="section" id="support">
+            <h2>후원 시스템 및 실천 인증 💖✅</h2>
+            <button class="button">HEAL 캠페인 후원하기</button>
+            <button class="button">오늘의 실천 인증하기</button>
+            <p style="margin-top: 10px;">여러분의 작은 참여가 세상을 치유합니다.</p>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        &copy; 2025 HEAL THE HEALTH, HEAL OURSELVES. All rights reserved.
+    </footer>
+
+    <script>
+        // 1. 환경 대시보드 데이터 업데이트 (더미 데이터)
+        function updateDashboard() {
+            const airQualityIndex = Math.floor(Math.random() * (150 - 20 + 1)) + 20; // 20~150
+            let airQualityStatus;
+
+            if (airQualityIndex <= 50) {
+                airQualityStatus = "좋음";
+            } else if (airQualityIndex <= 100) {
+                airQualityStatus = "보통";
+            } else {
+                airQualityStatus = "나쁨";
+            }
+
+            document.getElementById('air-quality').textContent = `${airQualityStatus} (${airQualityIndex})`;
+            document.getElementById('water-quality').textContent = `보통 (${(Math.random() * (7 - 4) + 4).toFixed(1)})`;
+        }
+
+        // 2. 간단한 데이터 시각화 (CSS 막대 그래프)
+        function renderSimpleChart() {
+            const data = [
+                { month: '1월', value: 75 },
+                { month: '2월', value: 85 },
+                { month: '3월', value: 60 },
+                { month: '4월', value: 90 }
+            ];
+            const chartArea = document.getElementById('chart-area');
+            chartArea.innerHTML = '';
+            const maxValue = 100;
+
+            data.forEach(item => {
+                const bar = document.createElement('div');
+                const height = (item.value / maxValue) * 100;
+                bar.className = 'bar';
+                bar.style.height = `${height}%`;
+                bar.innerHTML = `<span>${item.month}<br>${item.value}%</span>`;
+                chartArea.appendChild(bar);
+            });
+        }
+
+        // 3. 건강 기록 및 피드백 로직
+        function submitHealthRecord() {
+            const steps = parseInt(document.getElementById('steps').value) || 0;
+            const stress = parseInt(document.getElementById('stress').value) || 0;
+            const feedbackElement = document.getElementById('feedback-result');
+            let feedback = "기록해 주셔서 감사합니다! ";
+
+            if (steps < 7000) {
+                feedback += "활동량이 부족해 보이네요. 건강한 환경을 위해 밖으로 나가 걷는 시간을 늘려보세요! ";
+            } else {
+                feedback += "활동량이 아주 좋으시네요. 환경 보호와 건강 관리를 잘 병행하고 있습니다! ";
+            }
+
+            if (stress >= 7) {
+                feedback += "스트레스 지수가 높습니다. 잠시 자연 속에서 휴식을 취하는 것을 추천합니다. ";
+            } else {
+                feedback += "스트레스 관리를 잘 하고 계십니다. 긍정적인 마음으로 환경 보호에 힘써주세요.";
+            }
+
+            feedbackElement.textContent = feedback;
+        }
+
+        // 4. 환경 퀴즈 로직
+        const quizData = [
+            {
+                question: "다음 중 미세먼지 저감에 가장 효과적인 개인 실천은?",
+                options: ["승용차 자가용 이용", "대중교통 이용", "실내에서만 생활", "화목 난로 사용"],
+                answer: 1 // 인덱스
+            },
+            {
+                question: "분리수거 시 투명 페트병의 올바른 처리 방법은?",
+                options: ["라벨을 제거하지 않고 버린다", "내용물을 비우고 압착 후 라벨을 제거한다", "유색 플라스틱과 함께 버린다", "그냥 일반 쓰레기로 버린다"],
+                answer: 1
+            },
+            {
+                question: "보건학적으로 깨끗한 물은 어떤 오염원과 거리가 멀어야 할까요?",
+                options: ["토양", "공기", "미생물 및 화학 물질", "식물"],
+                answer: 2
+            }
+        ];
+
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        function renderQuiz() {
+            const quizArea = document.getElementById('quiz-area');
+            quizArea.innerHTML = '';
+            
+            quizData.forEach((q, index) => {
+                const questionHtml = document.createElement('div');
+                questionHtml.style.marginBottom = '20px';
+                questionHtml.innerHTML = `<p><strong>Q${index + 1}. ${q.question}</strong></p>`;
+                
+                q.options.forEach((option, optionIndex) => {
+                    const label = document.createElement('label');
+                    label.className = 'quiz-option';
+                    label.innerHTML = `
+                        <input type="radio" name="question${index}" value="${optionIndex}" onchange="recordAnswer(${index}, ${optionIndex})">
+                        ${option}
+                    `;
+                    questionHtml.appendChild(label);
+                });
+                quizArea.appendChild(questionHtml);
+            });
+
+            document.getElementById('submit-quiz-btn').style.display = 'block';
+        }
+
+        function recordAnswer(questionIndex, answerIndex) {
+            userAnswers[questionIndex] = answerIndex;
+        }
+
+        function checkQuizResult() {
+            let correctCount = 0;
+            const totalQuestions = quizData.length;
+
+            for (let i = 0; i < totalQuestions; i++) {
+                if (userAnswers[i] === quizData[i].answer) {
+                    correctCount++;
+                }
+            }
+
+            const score = Math.round((correctCount / totalQuestions) * 100);
+            let environmentalIndex = "보통";
+
+            if (score === 100) {
+                environmentalIndex = "매우 높음 (지구 지킴이 🌍)";
+            } else if (score >= 66) {
+                environmentalIndex = "높음 (관심을 가지고 실천 중)";
+            }
+
+            document.getElementById('quiz-result').innerHTML = 
+                `<strong>결과:</strong> ${totalQuestions} 문제 중 ${correctCount}개 정답. 환경 지수: <strong>${environmentalIndex}</strong> (${score}점)`;
+        }
+
+        // 초기화 함수 실행
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDashboard();
+            // 5초마다 대시보드 업데이트 (실시간처럼 보이도록)
+            setInterval(updateDashboard, 5000); 
+            renderSimpleChart();
+            renderQuiz();
+        });
+
+    </script>
+</body>
+</html>
